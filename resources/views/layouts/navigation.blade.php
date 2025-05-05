@@ -1,3 +1,7 @@
+@php
+    $role = Auth::user()->role_id;
+@endphp
+
 <nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
@@ -9,30 +13,49 @@
                 </div>
 
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('patients.index')" :active="request()->routeIs('patients.*')">
-                        {{ __('Pacientes') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('triage_entries.index')" :active="request()->routeIs('triage_entries.*')">
-                        {{ __('Triajes') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('medical_visits.index')" :active="request()->routeIs('medical_visits.*')">
-                        {{ __('Visitas Médicas') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('appointments.index')" :active="request()->routeIs('appointments.*')">
-                        {{ __('Citas') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('specialties.index')" :active="request()->routeIs('specialties.*')">
-                        {{ __('Especialidades') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('doctors.index')" :active="request()->routeIs('doctors.*')">
-                        {{ __('Doctores') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('medical_histories.index')" :active="request()->routeIs('medical_histories.*')">
-                        {{ __('Historiales Médicos') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('prescriptions.index')" :active="request()->routeIs('prescriptions.*')">
-                        {{ __('Recetas Médicas') }}
-                    </x-nav-link>
+                    @if(in_array($role, [1, 2, 4]))
+                        <x-nav-link :href="route('patients.index')" :active="request()->routeIs('patients.*')">
+                            {{ __('Pacientes') }}
+                        </x-nav-link>
+
+
+                    @endif
+
+
+                    @if(in_array($role, [1, 2, 4, 5]))
+                        <x-nav-link :href="route('triage_entries.index')" :active="request()->routeIs('triage_entries.*')">
+                            {{ __('Triajes') }}
+                        </x-nav-link>
+                    @endif
+                    @if(in_array($role, [1, 2, 4]))
+
+                        <x-nav-link :href="route('medical_cares.index')" :active="request()->routeIs('medical_cares.*')">
+                                {{ __('Atenciones Médicas') }}
+                            </x-nav-link>
+                    @endif
+                    @if(in_array($role, [1, 2, 4, 5]))
+                        <x-nav-link :href="route('medical_histories.index')" :active="request()->routeIs('medical_histories.*')">
+                            {{ __('Historiales Médicos') }}
+                        </x-nav-link>
+                    @endif
+
+                    @if(in_array($role, [1, 4]))
+                        <x-nav-link :href="route('doctors.index')" :active="request()->routeIs('doctors.*')">
+                            {{ __('Doctores') }}
+                        </x-nav-link>
+                    @endif
+
+                    @if($role == 1)
+                        <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.*')">
+                            {{ __('Usuarios') }}
+                        </x-nav-link>
+                    @endif
+
+                    @if(in_array($role, [1, 4, 5]))
+                        <x-nav-link :href="route('diagnosis.showForm')" :active="request()->routeIs('diagnosis.*')">
+                            {{ __('Diagnóstico') }}
+                        </x-nav-link>
+                    @endif
                 </div>
             </div>
 
@@ -84,30 +107,43 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('patients.index')" :active="request()->routeIs('patients.*')">
-                {{ __('Pacientes') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('triage_entries.index')" :active="request()->routeIs('triage_entries.*')">
-                {{ __('Triajes') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('medical_visits.index')" :active="request()->routeIs('medical_visits.*')">
-                {{ __('Visitas Médicas') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('appointments.index')" :active="request()->routeIs('appointments.*')">
-                {{ __('Citas') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('specialties.index')" :active="request()->routeIs('specialties.*')">
-                {{ __('Especialidades') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('doctors.index')" :active="request()->routeIs('doctors.*')">
-                {{ __('Doctores') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('medical_histories.index')" :active="request()->routeIs('medical_histories.*')">
-                {{ __('Historiales Médicos') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('prescriptions.index')" :active="request()->routeIs('prescriptions.*')">
-                {{ __('Recetas Médicas') }}
-            </x-responsive-nav-link>
+
+            @if(in_array($role, [1, 2, 4]))
+                <x-responsive-nav-link :href="route('patients.index')" :active="request()->routeIs('patients.*')">
+                    {{ __('Pacientes') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('medical_cares.index')" :active="request()->routeIs('medical_cares.*')">
+                    {{ __('Atenciones Médicas') }}
+                </x-responsive-nav-link>
+            @endif
+
+            @if(in_array($role, [1, 2, 4, 5]))
+                <x-responsive-nav-link :href="route('triage_entries.index')" :active="request()->routeIs('triage_entries.*')">
+                    {{ __('Triajes') }}
+                </x-responsive-nav-link>
+
+                <x-responsive-nav-link :href="route('medical_histories.index')" :active="request()->routeIs('medical_histories.*')">
+                    {{ __('Historiales Médicos') }}
+                </x-responsive-nav-link>
+            @endif
+
+            @if(in_array($role, [1, 4]))
+                <x-responsive-nav-link :href="route('doctors.index')" :active="request()->routeIs('doctors.*')">
+                    {{ __('Doctores') }}
+                </x-responsive-nav-link>
+            @endif
+
+            @if($role == 1)
+                <x-responsive-nav-link :href="route('users.index')" :active="request()->routeIs('users.*')">
+                    {{ __('Usuarios') }}
+                </x-responsive-nav-link>
+            @endif
+
+            @if(in_array($role, [1, 4, 5]))
+                <x-responsive-nav-link :href="route('diagnosis.showForm')" :active="request()->routeIs('diagnosis.*')">
+                    {{ __('Diagnóstico') }}
+                </x-responsive-nav-link>
+            @endif
         </div>
 
         <div class="pt-4 pb-1 border-t border-gray-200">

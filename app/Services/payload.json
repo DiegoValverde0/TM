@@ -1,0 +1,8 @@
+{
+    "text": "I have a high fever and dry cough since yesterday",
+    "include_tokens": false,
+    "language": "en",
+    "age": {"value": 30},
+    "sex": "female"
+  }
+  

@@ -17,7 +17,6 @@
             <tr>
                 <th>Nombre</th>
                 <th>Correo Electrónico</th>
-                <th>Rol</th>
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -26,7 +25,6 @@
             <tr>
                 <td>{{ $user->name }}</td>
                 <td>{{ $user->email }}</td>
-                <td>{{ ucfirst($user->role) }}</td>
                 <td>
                     @can('update', $user)  <!-- Solo los administradores pueden editar -->
                         <a href="{{ route('users.edit', $user->id) }}" class="btn btn-sm btn-warning">Editar</a>

@@ -3,68 +3,52 @@
 namespace App\Http\Controllers;
 
 use App\Models\Prescription;
-use App\Models\MedicalVisit;
+use App\Models\MedicalCare;
 use Illuminate\Http\Request;
-
 
 class PrescriptionController extends Controller
 {
     public function index()
     {
-        $prescriptions = Prescription::all();  // Obtener todas las recetas
+        $prescriptions = Prescription::all();
         return view('prescriptions.index', compact('prescriptions'));
     }
 
-    public function create($medicalVisitId)
+    public function create($medicalCareId)
     {
-        // Intentamos obtener la visita médica por ID
-        $medicalVisit = MedicalVisit::findOrFail($medicalVisitId);
-        
-        // Verifica si la visita médica existe
-    
-        // Si se encuentra la visita médica, la pasa a la vista
-        return view('prescriptions.create', compact('medicalVisit'));
+        $medicalCare = MedicalCare::findOrFail($medicalCareId);
+        return view('prescriptions.create', compact('medicalCare'));
     }
-    
-    
-    
-    
-    
 
-    
-    
-    
     public function store(Request $request)
     {
         $request->validate([
             'medication' => 'required|string',
             'dosage' => 'required|string',
             'instructions' => 'required|string',
-            'medical_visit_id' => 'required|exists:medical_visits,id', // Asegura que el ID de la visita médica sea válido
+            'medical_care_id' => 'required|exists:medical_cares,id',
         ]);
-    
+
         Prescription::create([
-            'medical_visit_id' => $request->medical_visit_id,
+            'medical_care_id' => $request->medical_care_id,
             'medication' => $request->medication,
             'dosage' => $request->dosage,
             'instructions' => $request->instructions,
         ]);
-    
-        return redirect()->route('prescriptions.index')->with('success', 'Prescription created successfully');
+
+        return redirect()->route('prescriptions.index')->with('success', 'Receta creada correctamente.');
     }
-    
-    
 
     public function edit(Prescription $prescription)
     {
-        $medicalVisits = MedicalVisit::all();
-        return view('prescriptions.edit', compact('prescription', 'medicalVisits'));
+        $medicalCares = MedicalCare::all();
+        return view('prescriptions.edit', compact('prescription', 'medicalCares'));
     }
 
     public function update(Request $request, Prescription $prescription)
     {
         $validated = $request->validate([
-            'medical_visit_id' => 'required|exists:medical_visits,id',
+            'medical_care_id' => 'required|exists:medical_cares,id',
             'medication' => 'required|string|max:255',
             'dosage' => 'required|string|max:255',
             'instructions' => 'required|string|max:255',
@@ -72,6 +56,6 @@ class PrescriptionController extends Controller
 
         $prescription->update($validated);
 
-        return redirect()->route('prescriptions.index')->with('success', 'Prescription updated successfully');
+        return redirect()->route('prescriptions.index')->with('success', 'Receta actualizada correctamente.');
     }
 }

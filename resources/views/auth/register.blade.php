@@ -23,17 +23,24 @@
         </div>
 
         <!-- Rol en el Sistema -->
-        <div class="mt-4">
-            <x-input-label for="role" :value="__('¿Cuál es tu rol?')" />
-            <select id="role" name="role" class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm" required>
-                <option value="" disabled selected>{{ __('Selecciona tu rol') }}</option>
-                <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Administrador</option>
-                <option value="doctor" {{ old('role') == 'doctor' ? 'selected' : '' }}>Médico</option>
-                <option value="nurse" {{ old('role') == 'nurse' ? 'selected' : '' }}>Enfermero/a</option>
-                <option value="receptionist" {{ old('role') == 'receptionist' ? 'selected' : '' }}>Recepcionista</option>
-            </select>
-            <x-input-error :messages="$errors->get('role')" class="mt-2" />
-        </div>
+        <!-- Rol en el Sistema (solo visible para admins) -->
+        @auth
+            @if(auth()->user()->role_id == 1)
+                <div class="mt-4">
+                    <x-input-label for="role_id" :value="__('¿Cuál es tu rol?')" />
+                    <select id="role_id" name="role_id" class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
+                        <option value="" disabled selected>{{ __('Selecciona tu rol') }}</option>
+                        @foreach($roles as $role)
+                            <option value="{{ $role->id }}" {{ old('role_id') == $role->id ? 'selected' : '' }}>
+                                {{ ucfirst($role->name) }}
+                            </option>
+                        @endforeach
+                    </select>
+                    <x-input-error :messages="$errors->get('role_id')" class="mt-2" />
+                </div>
+            @endif
+        @endauth
+
 
         <!-- Contraseña -->
         <div class="mt-4">

@@ -4,7 +4,14 @@
 <div class="container">
     <h1 class="my-4">Registros de Triaje</h1>
 
-    <a href="{{ route('triage_entries.create') }}" class="btn btn-primary mb-3">Nuevo Triaje</a>
+    @php
+        $user = auth()->user();
+    @endphp
+
+    {{-- Botón de creación solo visible para roles 1 y 4 --}}
+    @if(in_array($user->role_id, [1, 4]))
+        <a href="{{ route('triage_entries.create') }}" class="btn btn-primary mb-3">Nuevo Triaje</a>
+    @endif
 
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
@@ -37,13 +44,22 @@
                 </td>
                 <td>{{ $triage->created_at->format('d/m/Y H:i') }}</td>
                 <td>
-                    <a href="{{ route('triage_entries.edit', $triage->id) }}" class="btn btn-sm btn-warning">Editar</a>
+                    {{-- Ver detalles: disponible para todos --}}
+                    <a href="{{ route('triage_entries.show', $triage->id) }}" class="btn btn-sm btn-info">Ver</a>
 
+                    {{-- Editar: solo para roles 1 y 4 --}}
+                    @if(in_array($user->role_id, [1, 4]))
+                        <a href="{{ route('triage_entries.edit', $triage->id) }}" class="btn btn-sm btn-warning">Editar</a>
+                    @endif
+
+                    {{-- Eliminar: solo para administrador --}}
+                    @if($user->role_id === 1)
                     <form action="{{ route('triage_entries.destroy', $triage->id) }}" method="POST" style="display:inline-block;">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('¿Seguro que deseas eliminar este registro?')">Eliminar</button>
                     </form>
+                    @endif
                 </td>
             </tr>
             @endforeach

@@ -24,9 +24,7 @@ class SpecialtyController extends Controller
             'name' => 'required|string|max:255|unique:specialties,name',
         ]);
 
-        Specialty::create([
-            'name' => $request->name,
-        ]);
+        Specialty::create(['name' => $request->name]);
 
         return redirect()->route('specialties.index')->with('success', 'Especialidad creada correctamente.');
     }
@@ -42,9 +40,7 @@ class SpecialtyController extends Controller
             'name' => 'required|string|max:255|unique:specialties,name,' . $specialty->id,
         ]);
 
-        $specialty->update([
-            'name' => $request->name,
-        ]);
+        $specialty->update(['name' => $request->name]);
 
         return redirect()->route('specialties.index')->with('success', 'Especialidad actualizada correctamente.');
     }
@@ -52,7 +48,6 @@ class SpecialtyController extends Controller
     public function destroy(Specialty $specialty)
     {
         $specialty->delete();
-
         return redirect()->route('specialties.index')->with('success', 'Especialidad eliminada correctamente.');
     }
 }

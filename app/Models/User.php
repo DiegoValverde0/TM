@@ -13,8 +13,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role',
+        'role_id', 
     ];
+    
 
     protected $hidden = [
         'password',
@@ -31,15 +32,29 @@ class User extends Authenticatable
         return $this->hasMany(TriageEntry::class, 'nurse_id');
     }
 
-    public function medicalVisits() {
-        return $this->hasMany(MedicalVisit::class, 'doctor_id');
-    }
-
-    public function appointments() {
-        return $this->hasMany(Appointment::class, 'receptionist_id');
+    public function medicalCares() {
+        return $this->hasMany(MedicalCare::class, 'receptionist_id');
     }
     
     public function specialty() {
         return $this->belongsTo(Specialty::class);
     }   
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
+    
+    public function hasRole($roleName)
+    {
+        return $this->role && $this->role->name === $roleName;
+    }
+    public function doctor()
+    {
+        return $this->hasOne(Doctor::class);
+    }
+    public function patient()
+    {
+        return $this->hasOne(Patient::class);
+    }
+
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -25,7 +26,7 @@ class TriageEntry extends Model {
         return $this->belongsTo(User::class, 'nurse_id');
     }
 
-    public function medicalVisit() {
-        return $this->hasOne(MedicalVisit::class);
+    public function medicalCares() {
+        return $this->hasMany(MedicalCare::class);
     }
 }
