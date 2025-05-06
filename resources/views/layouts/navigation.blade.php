@@ -43,6 +43,9 @@
                         <x-nav-link :href="route('doctors.index')" :active="request()->routeIs('doctors.*')">
                             {{ __('Doctores') }}
                         </x-nav-link>
+                        <x-nav-link :href="route('specialties.index')" :active="request()->routeIs('specialties.*')">
+                            {{ __('Especialidades') }}
+                        </x-nav-link>
                     @endif
 
                     @if($role == 1)

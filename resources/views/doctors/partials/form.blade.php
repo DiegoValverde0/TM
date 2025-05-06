@@ -26,7 +26,4 @@
         </select>
     </div>
 
-    <div class="d-flex justify-content-end">
-        <button type="submit" class="btn btn-primary rounded-3 px-4">Guardar</button>
-    </div>
 </div>

@@ -6,7 +6,5 @@
         <input type="text" name="name" id="name" class="form-control rounded-3" value="{{ old('name', $specialty->name ?? '') }}" required>
     </div>
 
-    <div class="d-flex justify-content-end">
-        <button type="submit" class="btn btn-primary rounded-3 px-4">Guardar</button>
-    </div>
+
 </div>
